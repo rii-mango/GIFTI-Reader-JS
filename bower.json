@@ -1,0 +1,32 @@
+{
+  "name": "gifti-reader-js",
+  "description": "A JavaScript GIFTI file format reader.",
+  "main": "release/current/gifti.js",
+  "ignore": [
+    "src",
+    "tests",
+    "package.json",
+    "README.md",
+    ".gitignore"
+  ],
+  "dependencies": {
+    "pako": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "browserify": "*",
+    "uglifyjs": "*"
+  },
+  "license": "MIT",
+  "authors" : ["Michael Martinez"],
+  "homepage": "https://github.com/rii-mango/GIFTI-Reader-JS",
+  "keywords": [
+    "JavaScript",
+    "NIFTI",
+    "GIFTI"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rii-mango/GIFTI-Reader-JS.git"
+  }
+}
