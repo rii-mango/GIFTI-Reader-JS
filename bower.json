@@ -1,7 +1,7 @@
 {
   "name": "gifti-reader-js",
   "description": "A JavaScript GIFTI file format reader.",
-  "main": "release/current/gifti.js",
+  "main": "release/current/gifti-reader.js",
   "ignore": [
     "src",
     "tests",
