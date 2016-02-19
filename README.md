@@ -1,5 +1,5 @@
 # GIFTI-Reader-JS
-A JavaScript GIFTI file format reader.  This reader will parse GIFTI files, with added support for .surf.gii files.
+A JavaScript GIFTI file format reader.  This reader will parse GIFTI files, supports ASCII, Base64, and GZIP-Base64 types. Presently, there is more support for the .surf.gii GIFTI type.
 
 ###Usage
 See the [tests](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests) folder for more examples.
