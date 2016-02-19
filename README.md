@@ -12,9 +12,6 @@ var indices = gii.getTrianglesDataArray().getData();
 var normals = gii.getNormalsDataArray().getData();
 ```
 
-### API
-https://github.com/rii-mango/GIFTI-Reader-JS/wiki/API
-
 ###Install
 Get a packaged source file:
 
