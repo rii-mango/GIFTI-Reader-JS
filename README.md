@@ -6,6 +6,9 @@ See the [tests](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests) 
 
 ```javascript
 var gii = gifti.parse(giftiXMLString);
-var points = gii.getPointsDataArray().getData();  // Float32Array, Uint8Array or Int32Array as specified in GIFTI header
+
+// DataArrays will be Float32Array, Uint8Array or Int32Array as specified in GIFTI header
+var points = gii.getPointsDataArray().getData();
 var indices = gii.getTrianglesDataArray().getData();
+var normals = gii.getNormalsDataArray().getData();
 ```
