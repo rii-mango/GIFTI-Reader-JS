@@ -2,8 +2,7 @@
 A JavaScript [GIFTI](https://www.nitrc.org/projects/gifti/) file format reader.  This reader parses GIFTI files and supports ASCII, Base64, and GZIP-Base64 datatypes.
 
 ###Usage
-- [API](https://github.com/rii-mango/GIFTI-Reader-JS/wiki/API)
-- [Examples](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests)
+[API](https://github.com/rii-mango/GIFTI-Reader-JS/wiki/API) and [Examples](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests)
 ```javascript
 var gii = gifti.parse(giftiXMLString);
 
