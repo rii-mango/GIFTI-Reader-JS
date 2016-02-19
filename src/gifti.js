@@ -8,15 +8,15 @@
 
 var gifti = gifti || {};
 gifti.Utils = gifti.Utils || ((typeof require !== 'undefined') ? require('./utilities.js') : null);
-
-var pako = pako || ((typeof require !== 'undefined') ? require('pako') : null);
+gifti.DataArray = gifti.DataArray || ((typeof require !== 'undefined') ? require('./dataArray.js') : null);
+gifti.Transform = gifti.Transform || ((typeof require !== 'undefined') ? require('./transform.js') : null);
 
 var sax = sax || ((typeof require !== 'undefined') ? require('sax') : null);
 
 
 /*** Static Pseudo-constants ***/
 
-gifti.TAG_MATRIX = "CoordinateSystemTransformMatrix";
+gifti.TAG_TRANSFORM = "CoordinateSystemTransformMatrix";
 gifti.TAG_DATA = "Data";
 gifti.TAG_DATAARRAY = "DataArray";
 gifti.TAG_DATASPACE = "DataSpace";
@@ -36,22 +36,105 @@ gifti.TAG_VALUE = "Value";
 gifti.GIFTI = gifti.GIFTI || function () {
     this.attributes = null;
     this.metadata = {};
+    this.dataArrays = [];
 };
 
 
 
+/*** Prototype Methods ***/
 
-gifti.parse = function(xmlStr) {
+gifti.GIFTI.prototype.getPointsDataArray = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isPointSet()) {
+            return this.dataArrays[ctr];
+        }
+    }
+
+    return null;
+};
+
+
+
+gifti.GIFTI.prototype.getTrianglesDataArray = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isTriangles()) {
+            return this.dataArrays[ctr];
+        }
+    }
+
+    return null;
+};
+
+
+
+gifti.GIFTI.prototype.getNormalsDataArray = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isNormals()) {
+            return this.dataArrays[ctr];
+        }
+    }
+
+    return null;
+};
+
+
+
+gifti.GIFTI.prototype.getNumPoints = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isPointSet()) {
+            return this.dataArrays[ctr].getNumElements();
+        }
+    }
+
+    return 0;
+};
+
+
+
+gifti.GIFTI.prototype.getNumTriangles = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isTriangles()) {
+            return this.dataArrays[ctr].getNumElements();
+        }
+    }
+
+    return 0;
+};
+
+
+
+/*** Static Methods ***/
+
+gifti.parse = function (xmlStr) {
     var parser = sax.parser(true),
         gii = null,
+        currentDataArray = null,
         currentMetadataHolder = null,
         currentMetadataName = null,
         currentMetadataValue = null,
+        currentTransform = null,
+        currentString = "",
         isReadingGIFTI = false,
         isReadingMetadata = false,
         isReadingMD = false,
         isReadingName = false,
-        isReadingValue = false;
+        isReadingValue = false,
+        isReadingDataArray = false,
+        isReadingTransform = false,
+        isReadingDataSpace = false,
+        isReadingTransformedSpace = false,
+        isReadingMatrixData = false,
+        isReadingData = false;
 
     parser.onopentag = function (node) {
         if (node.name === gifti.TAG_GIFTI) {
@@ -66,14 +149,39 @@ gifti.parse = function(xmlStr) {
             isReadingName = true;
         } else if (node.name === gifti.TAG_VALUE) {
             isReadingValue = true;
+        } else if (node.name === gifti.TAG_DATAARRAY) {
+            isReadingDataArray = true;
+            currentMetadataHolder = currentDataArray = new gifti.DataArray();
+            gii.dataArrays.push(currentDataArray);
+            currentDataArray.attributes = node.attributes;
+        } else if (node.name === gifti.TAG_TRANSFORM) {
+            isReadingTransform = true;
+            currentTransform = new gifti.Transform();
+            currentDataArray.transforms.push(currentTransform);
+        } else if (node.name === gifti.TAG_DATASPACE) {
+            isReadingDataSpace = true;
+        } else if (node.name === gifti.TAG_TRANSFORMEDSPACE) {
+            isReadingTransformedSpace = true;
+        } else if (node.name === gifti.TAG_MATRIXDATA) {
+            isReadingMatrixData = true;
+        } else if (node.name === gifti.TAG_DATA) {
+            isReadingData = true;
         }
     };
 
     parser.ontext = parser.oncdata = function (text) {
         if (isReadingName) {
-            currentMetadataName = text;
+            currentString += text;
         } else if (isReadingValue) {
-            currentMetadataValue = text;
+            currentString += text;
+        } else if (isReadingDataSpace) {
+            currentString += text;
+        } else if (isReadingTransformedSpace) {
+            currentString += text;
+        } else if (isReadingMatrixData) {
+            currentString += text;
+        } else if (isReadingData) {
+            currentString += text;
         }
     };
 
@@ -89,17 +197,37 @@ gifti.parse = function(xmlStr) {
             }
         } else if (tagName === gifti.TAG_NAME) {
             isReadingName = false;
+            currentMetadataName = currentString;
+            currentString = "";
         } else if (tagName === gifti.TAG_VALUE) {
             isReadingValue = false;
+            currentMetadataValue = currentString;
+            currentString = "";
+        } else if (tagName === gifti.TAG_DATAARRAY) {
+            isReadingDataArray = false;
+        } else if (tagName === gifti.TAG_TRANSFORM) {
+            isReadingTransform = false;
+        } else if (tagName === gifti.TAG_DATASPACE) {
+            isReadingDataSpace = false;
+            currentTransform.dataSpace = currentString;
+            currentString = "";
+        } else if (tagName === gifti.TAG_TRANSFORMEDSPACE) {
+            isReadingTransformedSpace = false;
+            currentTransform.transformedSpace = currentString;
+            currentString = "";
+        } else if (tagName === gifti.TAG_MATRIXDATA) {
+            isReadingMatrixData = false;
+            currentTransform.matrixData = currentString;
+            currentString = "";
+        } else if (tagName === gifti.TAG_DATA) {
+            isReadingData = false;
+            currentDataArray.data = currentString;
+            currentString = "";
         }
     };
 
     parser.onerror = function (e) {
-        // an error happened.
-    };
-
-    parser.onend = function () {
-        console.log(gii.metadata);
+        console.log(e);
     };
 
     parser.write(xmlStr).close();
