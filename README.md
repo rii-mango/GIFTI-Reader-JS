@@ -4,8 +4,6 @@ A JavaScript [GIFTI](https://www.nitrc.org/projects/gifti/) file format reader. 
 ###Usage
 - [API](https://github.com/rii-mango/GIFTI-Reader-JS/wiki/API)
 - [Examples](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests)
-- Simple usage:
-
 ```javascript
 var gii = gifti.parse(giftiXMLString);
 
