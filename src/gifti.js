@@ -7,7 +7,7 @@
 /*** Imports ***/
 
 /**
- * GIFTI
+ * gifti
  * @type {{}}
  */
 var gifti = gifti || {};
