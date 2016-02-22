@@ -13,12 +13,14 @@
   "devDependencies": {
     "mocha": "*",
     "browserify": "*",
-    "uglifyjs": "*"
+    "uglifyjs": "*",
+    "jsdoc-to-markdown": "*"
   },
   "scripts": {
     "test": "mocha --timeout 0 tests",
     "build": "rm -rf build; mkdir build; browserify --standalone gifti src/gifti.js -o build/gifti-reader.js; uglifyjs build/gifti-reader.js -o build/gifti-reader-min.js",
-    "release": "rm release/current/*.js; cp build/*.js release/current/."
+    "release": "rm release/current/*.js; cp build/*.js release/current/.",
+    "doc": "rm -rf build; mkdir build; ./node_modules/.bin/jsdoc2md src/*.js > build/docs.md"
   },
   "repository": {
     "type": "git",
