@@ -11,6 +11,15 @@ var gifti = gifti || {};
 
 
 /*** Constructor ***/
+
+/**
+ * The Transform constructor.
+ * @constructor
+ * @property {string} dataSpace
+ * @property {string} transformedSpace
+ * @property {number[]} matrixData
+ * @type {Function}
+ */
 gifti.Transform = gifti.Transform || function () {
     this.dataSpace = null;
     this.transformedSpace = null;

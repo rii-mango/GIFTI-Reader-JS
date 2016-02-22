@@ -6,7 +6,12 @@
 
 /*** Imports ***/
 
+/**
+ * GIFTI
+ * @type {{}}
+ */
 var gifti = gifti || {};
+
 gifti.Utils = gifti.Utils || ((typeof require !== 'undefined') ? require('./utilities.js') : null);
 gifti.DataArray = gifti.DataArray || ((typeof require !== 'undefined') ? require('./dataArray.js') : null);
 gifti.Transform = gifti.Transform || ((typeof require !== 'undefined') ? require('./transform.js') : null);
@@ -33,6 +38,15 @@ gifti.TAG_VALUE = "Value";
 
 
 /*** Constructor ***/
+
+/**
+ * The GIFTI constructor.
+ * @constructor
+ * @property {object} attributes
+ * @property {object} metadata
+ * @property {gifti.DataArray[]} dataArrays
+ * @type {Function}
+ */
 gifti.GIFTI = gifti.GIFTI || function () {
     this.attributes = null;
     this.metadata = {};
@@ -43,6 +57,10 @@ gifti.GIFTI = gifti.GIFTI || function () {
 
 /*** Prototype Methods ***/
 
+/**
+ * Returns the point set data array.
+ * @returns {gifti.DataArray}
+ */
 gifti.GIFTI.prototype.getPointsDataArray = function () {
     var ctr;
 
@@ -56,7 +74,10 @@ gifti.GIFTI.prototype.getPointsDataArray = function () {
 };
 
 
-
+/**
+ * Returns the triangle indices data array.
+ * @returns {gifti.DataArray}
+ */
 gifti.GIFTI.prototype.getTrianglesDataArray = function () {
     var ctr;
 
@@ -70,7 +91,10 @@ gifti.GIFTI.prototype.getTrianglesDataArray = function () {
 };
 
 
-
+/**
+ * Returns the normals data array.
+ * @returns {gifti.DataArray}
+ */
 gifti.GIFTI.prototype.getNormalsDataArray = function () {
     var ctr;
 
@@ -84,7 +108,10 @@ gifti.GIFTI.prototype.getNormalsDataArray = function () {
 };
 
 
-
+/**
+ * Returns the number of points.
+ * @returns {number}
+ */
 gifti.GIFTI.prototype.getNumPoints = function () {
     var ctr;
 
@@ -98,7 +125,10 @@ gifti.GIFTI.prototype.getNumPoints = function () {
 };
 
 
-
+/**
+ * Returns the number of triangles.
+ * @returns {number}
+ */
 gifti.GIFTI.prototype.getNumTriangles = function () {
     var ctr;
 
@@ -115,6 +145,11 @@ gifti.GIFTI.prototype.getNumTriangles = function () {
 
 /*** Static Methods ***/
 
+/**
+ * Parses GIFTI data.
+ * @param {string} xmlStr
+ * @returns {gifti.GIFTI}
+ */
 gifti.parse = function (xmlStr) {
     var parser = sax.parser(true),
         gii = null,
