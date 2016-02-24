@@ -214,10 +214,11 @@ gifti.DataArray.prototype.isUnsignedInt8 = function() {
 
 
 /**
- * Returns the data as a typed array (either Float32Array, Uint8Array or Int32Array)
- * @returns {Float32Array|Uint8Array|Int32Array}
+ * Returns the data as a typed array (either Float32Array, Uint8Array, Uint16Array or Int32Array)
+ * @param {boolean} [glSafe] - true to convert Int32Array to Uint16Array
+ * @returns {Float32Array|Uint8Array|Uint16Array|Int32Array}
  */
-gifti.DataArray.prototype.getData = function() {
+gifti.DataArray.prototype.getData = function(glSafe) {
     if (!this.dataConverted) {
         this.dataConverted = true;
 
@@ -246,6 +247,10 @@ gifti.DataArray.prototype.getData = function() {
                 gifti.DataArray.readFloat32GZIPBase64(this);
             }
         }
+    }
+
+    if (glSafe && this.isInt32()) {
+        return new Uint16Array(this.data);
     }
 
     return this.data;
