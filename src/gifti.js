@@ -108,6 +108,25 @@ gifti.GIFTI.prototype.getNormalsDataArray = function () {
 };
 
 
+
+/**
+ * Returns the colors data array.
+ * @returns {gifti.DataArray}
+ */
+gifti.GIFTI.prototype.getColorsDataArray = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isColors()) {
+            return this.dataArrays[ctr];
+        }
+    }
+
+    return null;
+};
+
+
+
 /**
  * Returns the number of points.
  * @returns {number}

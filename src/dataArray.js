@@ -101,6 +101,15 @@ gifti.DataArray.prototype.isNormals = function() {
 
 
 /**
+ * Returns true if this data array represents normals.
+ * @returns {boolean}
+ */
+gifti.DataArray.prototype.isColors = function() {
+    return (this.attributes[gifti.ATT_INTENT] === gifti.NIFTI_INTENT_RGB_VECTOR) || (this.attributes[gifti.ATT_INTENT] === gifti.NIFTI_INTENT_RGBA_VECTOR);
+};
+
+
+/**
  * Returns the number of dimensions of this data array.
  * @returns {number}
  */
