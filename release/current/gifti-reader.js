@@ -12763,6 +12763,15 @@ gifti.DataArray.prototype.isNormals = function() {
 
 
 /**
+ * Returns true if this data array represents normals.
+ * @returns {boolean}
+ */
+gifti.DataArray.prototype.isColors = function() {
+    return (this.attributes[gifti.ATT_INTENT] === gifti.NIFTI_INTENT_RGB_VECTOR) || (this.attributes[gifti.ATT_INTENT] === gifti.NIFTI_INTENT_RGBA_VECTOR);
+};
+
+
+/**
  * Returns the number of dimensions of this data array.
  * @returns {number}
  */
@@ -13199,6 +13208,25 @@ gifti.GIFTI.prototype.getNormalsDataArray = function () {
 
     return null;
 };
+
+
+
+/**
+ * Returns the colors data array.
+ * @returns {gifti.DataArray}
+ */
+gifti.GIFTI.prototype.getColorsDataArray = function () {
+    var ctr;
+
+    for (ctr = 0; ctr < this.dataArrays.length; ctr += 1) {
+        if (this.dataArrays[ctr].isColors()) {
+            return this.dataArrays[ctr];
+        }
+    }
+
+    return null;
+};
+
 
 
 /**
