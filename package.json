@@ -1,6 +1,6 @@
 {
   "name": "gifti-reader-js",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "A JavaScript GIFTI file format reader.",
   "main": "src/gifti.js",
   "directories": {
