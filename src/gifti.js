@@ -146,6 +146,17 @@ gifti.GIFTI.prototype.getNumTriangles = function () {
 /*** Static Methods ***/
 
 /**
+ * Returns true if this filename contains ".gii"
+ * @param filename
+ * @returns {boolean}
+ */
+gifti.isThisFormat = function (filename) {
+    return (filename.indexOf(".gii") !== -1);
+};
+
+
+
+/**
  * Parses GIFTI data.
  * @param {string} xmlStr
  * @returns {gifti.GIFTI}
