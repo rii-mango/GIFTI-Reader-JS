@@ -213,12 +213,12 @@ gifti.DataArray.prototype.isUnsignedInt8 = function() {
 };
 
 
+
 /**
- * Returns the data as a typed array (either Float32Array, Uint8Array, Uint16Array or Int32Array)
- * @param {boolean} [glSafe] - true to convert Int32Array to Uint16Array
- * @returns {Float32Array|Uint8Array|Uint16Array|Int32Array}
+ * Returns the data as a typed array (either Float32Array, Uint8Array or Int32Array)
+ * @returns {Float32Array|Uint8Array|Int32Array}
  */
-gifti.DataArray.prototype.getData = function(glSafe) {
+gifti.DataArray.prototype.getData = function() {
     if (!this.dataConverted) {
         this.dataConverted = true;
 
@@ -249,11 +249,45 @@ gifti.DataArray.prototype.getData = function(glSafe) {
         }
     }
 
-    if (glSafe && this.isInt32()) {
-        return new Uint16Array(this.data);
-    }
-
     return this.data;
+};
+
+
+
+gifti.DataArray.prototype.getDataAsync = function(onProgress, onFinish) {
+    if (!this.dataConverted) {
+        this.dataConverted = true;
+
+        if (this.isAscii()) {
+            if (this.isUnsignedInt8()) {
+                gifti.DataArray.readUnsignedInt8ASCII(this);
+            } else if (this.isInt32()) {
+                gifti.DataArray.readSignedInt32ASCII(this);
+            } else {
+                gifti.DataArray.readFloat32ASCII(this);
+            }
+
+            onFinish();
+        } else if (this.isBase64Binary()) {
+            if (this.isUnsignedInt8()) {
+                gifti.DataArray.readUnsignedInt8Base64(this);
+            } else if (this.isInt32()) {
+                gifti.DataArray.readSignedInt32Base64(this);
+            } else {
+                gifti.DataArray.readFloat32Base64(this);
+            }
+
+            onFinish();
+        } else if (this.isGzipBase64Binary()) {
+            if (this.isUnsignedInt8()) {
+                gifti.DataArray.readUnsignedInt8GZIPBase64Async(this, onProgress, onFinish);
+            } else if (this.isInt32()) {
+                gifti.DataArray.readSignedInt32GZIPBase64Async(this, onProgress, onFinish);
+            } else {
+                gifti.DataArray.readFloat32GZIPBase64Async(this, onProgress, onFinish);
+            }
+        }
+    }
 };
 
 
@@ -309,6 +343,22 @@ gifti.DataArray.readUnsignedInt8GZIPBase64 = function(obj) {
 
 
 
+
+gifti.DataArray.readUnsignedInt8GZIPBase64Async = function(obj, onProgress, onFinish) {
+    var rawData = Base64Binary.decodeArrayBuffer(obj.data);
+
+    var inflator = new pako.Inflate();
+
+    var onFinished = function() {
+        obj.data = new Uint8Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength);
+        onFinish(obj.data);
+    };
+
+    setTimeout(function() { gifti.DataArray.readNext(inflator, rawData, 0, onProgress, onFinished); }, 0);
+};
+
+
+
 gifti.DataArray.readSignedInt32GZIPBase64 = function(obj) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
     rawData = pako.inflate(rawData).buffer;
@@ -317,10 +367,56 @@ gifti.DataArray.readSignedInt32GZIPBase64 = function(obj) {
 
 
 
+gifti.DataArray.readSignedInt32GZIPBase64Async = function(obj, onProgress, onFinish) {
+    var rawData = Base64Binary.decodeArrayBuffer(obj.data);
+
+    var inflator = new pako.Inflate();
+
+    var onFinished = function() {
+        obj.data = new Int32Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength / 4);
+        onFinish(obj.data);
+    };
+
+    setTimeout(function() { gifti.DataArray.readNext(inflator, rawData, 0, onProgress, onFinished); }, 0);
+};
+
+
+
 gifti.DataArray.readFloat32GZIPBase64 = function(obj) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
     rawData = pako.inflate(rawData).buffer;
     obj.data = new Float32Array(rawData, 0, rawData.byteLength / 4);
+};
+
+
+
+gifti.DataArray.readFloat32GZIPBase64Async = function(obj, onProgress, onFinish) {
+    var rawData = Base64Binary.decodeArrayBuffer(obj.data);
+
+    var inflator = new pako.Inflate();
+
+    var onFinished = function() {
+        obj.data = new Float32Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength / 4);
+        onFinish(obj.data);
+    };
+
+    setTimeout(function() { gifti.DataArray.readNext(inflator, rawData, 0, onProgress, onFinished); }, 0);
+};
+
+
+
+gifti.DataArray.readNext = function(inflator, rawData, index, onProgress, onFinish) {
+    var end = index + 4096 * 8;
+    var finished = (end >= rawData.byteLength);
+
+    inflator.push(rawData.slice(index, index + 4096 * 8), finished);
+
+    if (finished) {
+        onFinish();
+    } else {
+        onProgress(end / rawData.byteLength);
+        setTimeout(function() { gifti.DataArray.readNext(inflator, rawData, end, onProgress, onFinish); }, 0);
+    }
 };
 
 
