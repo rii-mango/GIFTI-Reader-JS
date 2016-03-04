@@ -6,7 +6,7 @@ A JavaScript [GIFTI](https://www.nitrc.org/projects/gifti/) file format reader. 
 ```javascript
 var gii = gifti.parse(giftiXMLString);
 
-// DataArray.getData() will return Float32Array, Uint8Array or Int32Array as specified in GIFTI header
+// DataArray.getData() will return Float32Array, Uint8Array or Int32Array depending on datatype
 var points = gii.getPointsDataArray().getData();
 var indices = gii.getTrianglesDataArray().getData();
 var normals = gii.getNormalsDataArray().getData();
