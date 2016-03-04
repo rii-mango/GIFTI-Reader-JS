@@ -8,8 +8,9 @@ var gii = gifti.parse(giftiXMLString);
 
 // DataArray.getData() will return Float32Array, Uint8Array or Int32Array as specified in GIFTI header
 var points = gii.getPointsDataArray().getData();
-var indices = gii.getTrianglesDataArray().getData(true); // converts Int32Array to WebGL-safe Uint16Array
+var indices = gii.getTrianglesDataArray().getData();
 var normals = gii.getNormalsDataArray().getData();
+var colors = gii.getColorsDataArray().getData();
 ```
 
 ###Install
