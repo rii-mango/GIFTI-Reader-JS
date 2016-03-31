@@ -33,11 +33,12 @@ describe('GIFTI-Reader-JS', function () {
             assert.equal(3, gii.labelTable.length);
         });
 
-        it('last label properties should be 0.008, 1, 1, 1', function () {
+        it('last label properties should be 0.008, 1, 1, 1, Negative', function () {
             assert.equal(0.008, gii.labelTable['2'].r);
             assert.equal(1, gii.labelTable['2'].g);
             assert.equal(1, gii.labelTable['2'].b);
             assert.equal(1, gii.labelTable['2'].a);
+            assert.equal("Negative", gii.labelTable['2'].label);
         });
     });
 });

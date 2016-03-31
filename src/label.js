@@ -30,7 +30,8 @@ gifti.ATT_ALPHA = "Alpha";
  * @property {number} r
  * @property {number} g
  * @property {number} b
- * @property {number} a
+ * @property {string} a
+ * @property {number} label
  * @type {Function|*}
  */
 gifti.Label = gifti.Label || function (attributes) {
@@ -39,6 +40,7 @@ gifti.Label = gifti.Label || function (attributes) {
     this.g = parseFloat(attributes[gifti.ATT_GREEN]);
     this.b = parseFloat(attributes[gifti.ATT_BLUE]);
     this.a = parseFloat(attributes[gifti.ATT_ALPHA]);
+    this.label = null;
 };
 
 

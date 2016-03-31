@@ -257,6 +257,8 @@ gifti.parse = function (xmlStr) {
             currentString += text;
         } else if (isReadingData) {
             currentString += text;
+        } else if (isReadingLabel) {
+            currentString += text;
         }
     };
 
@@ -281,7 +283,9 @@ gifti.parse = function (xmlStr) {
         } else if (tagName === gifti.TAG_LABELTABLE) {
             isReadingLabelTable = false;
         } else if (tagName === gifti.TAG_LABEL) {
+            currentLabel.label = currentString.trim();
             gii.labelTable[currentLabel.key] = currentLabel;
+            currentString = "";
         } else if (tagName === gifti.TAG_DATAARRAY) {
             isReadingDataArray = false;
         } else if (tagName === gifti.TAG_TRANSFORM) {
