@@ -30,8 +30,8 @@ gifti.ATT_ALPHA = "Alpha";
  * @property {number} r
  * @property {number} g
  * @property {number} b
- * @property {string} a
- * @property {number} label
+ * @property {number} a
+ * @property {string} label
  * @type {Function|*}
  */
 gifti.Label = gifti.Label || function (attributes) {

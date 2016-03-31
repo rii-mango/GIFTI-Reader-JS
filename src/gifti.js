@@ -45,6 +45,7 @@ gifti.TAG_VALUE = "Value";
  * @constructor
  * @property {object} attributes
  * @property {object} metadata
+ * @property {gifti.Label[]} labelTable
  * @property {gifti.DataArray[]} dataArrays
  * @type {Function}
  */
