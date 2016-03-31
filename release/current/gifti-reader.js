@@ -12186,7 +12186,7 @@ module.exports = ZStream;
 
         case S.SGML_DECL:
           if ((parser.sgmlDecl + c).toUpperCase() === CDATA) {
-            emitNode(parser, 'onopencdata')
+            emitNode(parser, 'opencdata')
             parser.state = S.CDATA
             parser.sgmlDecl = ''
             parser.cdata = ''
@@ -13099,7 +13099,7 @@ if ((moduleType !== 'undefined') && module.exports) {
     module.exports = gifti.DataArray;
 }
 
-},{"../lib/base64-binary.js":1,"./transform.js":46,"pako":27}],45:[function(require,module,exports){
+},{"../lib/base64-binary.js":1,"./transform.js":47,"pako":27}],45:[function(require,module,exports){
 
 /*jslint browser: true, node: true */
 /*global require, module */
@@ -13117,6 +13117,7 @@ var gifti = gifti || {};
 gifti.Utils = gifti.Utils || ((typeof require !== 'undefined') ? require('./utilities.js') : null);
 gifti.DataArray = gifti.DataArray || ((typeof require !== 'undefined') ? require('./dataArray.js') : null);
 gifti.Transform = gifti.Transform || ((typeof require !== 'undefined') ? require('./transform.js') : null);
+gifti.Label = gifti.Label || ((typeof require !== 'undefined') ? require('./label.js') : null);
 
 var sax = sax || ((typeof require !== 'undefined') ? require('sax') : null);
 
@@ -13153,6 +13154,7 @@ gifti.GIFTI = gifti.GIFTI || function () {
     this.attributes = null;
     this.metadata = {};
     this.dataArrays = [];
+    this.labelTable = [];
 };
 
 
@@ -13291,6 +13293,7 @@ gifti.parse = function (xmlStr) {
         currentMetadataValue = null,
         currentTransform = null,
         currentString = "",
+        currentLabel = null,
         isReadingGIFTI = false,
         isReadingMetadata = false,
         isReadingMD = false,
@@ -13301,7 +13304,9 @@ gifti.parse = function (xmlStr) {
         isReadingDataSpace = false,
         isReadingTransformedSpace = false,
         isReadingMatrixData = false,
-        isReadingData = false;
+        isReadingData = false,
+        isReadingLabelTable = false,
+        isReadingLabel = false;
 
     parser.onopentag = function (node) {
         if (node.name === gifti.TAG_GIFTI) {
@@ -13316,6 +13321,11 @@ gifti.parse = function (xmlStr) {
             isReadingName = true;
         } else if (node.name === gifti.TAG_VALUE) {
             isReadingValue = true;
+        } else if (node.name === gifti.TAG_LABELTABLE) {
+            isReadingLabelTable = true;
+        } else if (node.name === gifti.TAG_LABEL) {
+            isReadingLabel = true;
+            currentLabel = new gifti.Label(node.attributes);
         } else if (node.name === gifti.TAG_DATAARRAY) {
             isReadingDataArray = true;
             currentMetadataHolder = currentDataArray = new gifti.DataArray();
@@ -13370,6 +13380,10 @@ gifti.parse = function (xmlStr) {
             isReadingValue = false;
             currentMetadataValue = currentString;
             currentString = "";
+        } else if (tagName === gifti.TAG_LABELTABLE) {
+            isReadingLabelTable = false;
+        } else if (tagName === gifti.TAG_LABEL) {
+            gii.labelTable[currentLabel.key] = currentLabel;
         } else if (tagName === gifti.TAG_DATAARRAY) {
             isReadingDataArray = false;
         } else if (tagName === gifti.TAG_TRANSFORM) {
@@ -13411,7 +13425,60 @@ if ((moduleType !== 'undefined') && module.exports) {
     module.exports = gifti;
 }
 
-},{"./dataArray.js":44,"./transform.js":46,"./utilities.js":47,"sax":43}],46:[function(require,module,exports){
+},{"./dataArray.js":44,"./label.js":46,"./transform.js":47,"./utilities.js":48,"sax":43}],46:[function(require,module,exports){
+
+/*jslint browser: true, node: true */
+/*global require, module */
+
+"use strict";
+
+/*** Imports ***/
+
+var gifti = gifti || {};
+
+
+
+/*** Static Pseudo-constants ***/
+
+gifti.ATT_KEY = "Key";
+gifti.ATT_RED = "Red";
+gifti.ATT_GREEN = "Green";
+gifti.ATT_BLUE = "Blue";
+gifti.ATT_ALPHA = "Alpha";
+
+
+
+/*** Constructor ***/
+
+/**
+ * The Label constructor.
+ * @constructor
+ * @param {object} attributes
+ * @property {string} key
+ * @property {number} r
+ * @property {number} g
+ * @property {number} b
+ * @property {number} a
+ * @type {Function|*}
+ */
+gifti.Label = gifti.Label || function (attributes) {
+    this.key = attributes[gifti.ATT_KEY];
+    this.r = parseFloat(attributes[gifti.ATT_RED]);
+    this.g = parseFloat(attributes[gifti.ATT_GREEN]);
+    this.b = parseFloat(attributes[gifti.ATT_BLUE]);
+    this.a = parseFloat(attributes[gifti.ATT_ALPHA]);
+};
+
+
+
+/*** Exports ***/
+
+var moduleType = typeof module;
+if ((moduleType !== 'undefined') && module.exports) {
+    module.exports = gifti.Label;
+}
+
+},{}],47:[function(require,module,exports){
 
 /*jslint browser: true, node: true */
 /*global require, module */
@@ -13449,7 +13516,7 @@ if ((moduleType !== 'undefined') && module.exports) {
     module.exports = gifti.Transform;
 }
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 
 /*jslint browser: true, node: true */
 /*global require, module */
