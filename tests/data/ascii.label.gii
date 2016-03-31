@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE GIFTI SYSTEM "http://www.nitrc.org/frs/download.php/1594/gifti.dtd">
+<GIFTI xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.nitrc.org/frs/download.php/1303/GIFTI_Caret.xsd" Version="1.0" NumberOfDataArrays="1">
+	<MetaData>
+		<MD>
+			<Name><![CDATA[date]]></Name>
+			<Value><![CDATA[3 Nov 2009 11:08:27]]></Value>
+		</MD>
+	</MetaData>
+	<LabelTable>
+		<Label Key="0" Red="0.667" Green="0.667" Blue="0.667" Alpha="1.000"><![CDATA[???]]></Label>
+		<Label Key="1" Red="1.000" Green="1.000" Blue="0.000" Alpha="1.000"><![CDATA[Positive]]></Label>
+		<Label Key="2" Red="0.008" Green="1.000" Blue="1.000" Alpha="1.000"><![CDATA[Negative]]></Label></LabelTable>
+	<DataArray Intent="NIFTI_INTENT_LABEL" DataType="NIFTI_TYPE_INT32" ArrayIndexingOrder="RowMajorOrder" Dimensionality="1" Dim0="71723" Encoding="ASCII" Endian="LittleEndian" ExternalFileName="" ExternalFileOffset="">
+		<MetaData>
+			<MD>
+				<Name><![CDATA[Description]]></Name>
+				<Value><![CDATA[]]></Value>
+			</MD>
+			<MD>
+				<Name><![CDATA[Name]]></Name>
+				<Value><![CDATA[Activations]]></Value>
+			</MD>
+			<MD>
+				<Name><![CDATA[UniqueID]]></Name>
+				<Value><![CDATA[{06058ed8-b782-4431-99ac-b760a7410080}]]></Value>
+			</MD>
+			<MD>
+				<Name><![CDATA[tagStudyMetaDataLinkSet]]></Name>
+				<Value><![CDATA[]]></Value>
+			</MD>
+		</MetaData>
+		<Data>
+ 0
+ 2
+ 0
+ 1
+ 1
+ 0
+ 2
+ 0
+ 1
+ 0
+ </Data>
+	</DataArray>
+</GIFTI>

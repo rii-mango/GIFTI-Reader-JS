@@ -15,6 +15,7 @@ var gifti = gifti || {};
 gifti.Utils = gifti.Utils || ((typeof require !== 'undefined') ? require('./utilities.js') : null);
 gifti.DataArray = gifti.DataArray || ((typeof require !== 'undefined') ? require('./dataArray.js') : null);
 gifti.Transform = gifti.Transform || ((typeof require !== 'undefined') ? require('./transform.js') : null);
+gifti.Label = gifti.Label || ((typeof require !== 'undefined') ? require('./label.js') : null);
 
 var sax = sax || ((typeof require !== 'undefined') ? require('sax') : null);
 
@@ -51,6 +52,7 @@ gifti.GIFTI = gifti.GIFTI || function () {
     this.attributes = null;
     this.metadata = {};
     this.dataArrays = [];
+    this.labelTable = [];
 };
 
 
@@ -189,6 +191,7 @@ gifti.parse = function (xmlStr) {
         currentMetadataValue = null,
         currentTransform = null,
         currentString = "",
+        currentLabel = null,
         isReadingGIFTI = false,
         isReadingMetadata = false,
         isReadingMD = false,
@@ -199,7 +202,9 @@ gifti.parse = function (xmlStr) {
         isReadingDataSpace = false,
         isReadingTransformedSpace = false,
         isReadingMatrixData = false,
-        isReadingData = false;
+        isReadingData = false,
+        isReadingLabelTable = false,
+        isReadingLabel = false;
 
     parser.onopentag = function (node) {
         if (node.name === gifti.TAG_GIFTI) {
@@ -214,6 +219,11 @@ gifti.parse = function (xmlStr) {
             isReadingName = true;
         } else if (node.name === gifti.TAG_VALUE) {
             isReadingValue = true;
+        } else if (node.name === gifti.TAG_LABELTABLE) {
+            isReadingLabelTable = true;
+        } else if (node.name === gifti.TAG_LABEL) {
+            isReadingLabel = true;
+            currentLabel = new gifti.Label(node.attributes);
         } else if (node.name === gifti.TAG_DATAARRAY) {
             isReadingDataArray = true;
             currentMetadataHolder = currentDataArray = new gifti.DataArray();
@@ -268,6 +278,10 @@ gifti.parse = function (xmlStr) {
             isReadingValue = false;
             currentMetadataValue = currentString;
             currentString = "";
+        } else if (tagName === gifti.TAG_LABELTABLE) {
+            isReadingLabelTable = false;
+        } else if (tagName === gifti.TAG_LABEL) {
+            gii.labelTable[currentLabel.key] = currentLabel;
         } else if (tagName === gifti.TAG_DATAARRAY) {
             isReadingDataArray = false;
         } else if (tagName === gifti.TAG_TRANSFORM) {
