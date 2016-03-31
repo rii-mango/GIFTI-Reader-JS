@@ -11,6 +11,7 @@ var points = gii.getPointsDataArray().getData();
 var indices = gii.getTrianglesDataArray().getData();
 var normals = gii.getNormalsDataArray().getData();
 var colors = gii.getColorsDataArray().getData();
+var labels = gii.labelTable;
 ```
 
 ###Install
