@@ -1,7 +1,7 @@
 # GIFTI-Reader-JS
 A JavaScript [GIFTI](https://www.nitrc.org/projects/gifti/) file format reader.  This reader parses GIFTI files and supports ASCII, Base64, and GZIP-Base64 datatypes.
 
-###Usage
+### Usage
 [API](https://github.com/rii-mango/GIFTI-Reader-JS/wiki/API) and [more examples](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/tests)
 ```javascript
 var gii = gifti.parse(giftiXMLString);
@@ -14,7 +14,7 @@ var colors = gii.getColorsDataArray().getData();
 var labels = gii.labelTable;
 ```
 
-###Install
+### Install
 Get a packaged source file:
 
 * [gifti-reader.js](https://raw.githubusercontent.com/rii-mango/GIFTI-Reader-JS/master/release/current/gifti-reader.js)
@@ -32,12 +32,12 @@ Or install via [Bower](http://bower.io/):
 bower install gifti-reader-js
 ```
 
-###Testing
+### Testing
 ```
 npm test
 ```
 
-###Building
+### Building
 See the [release folder](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/release) for the latest builds or build it yourself using:
 ```
 npm run build
