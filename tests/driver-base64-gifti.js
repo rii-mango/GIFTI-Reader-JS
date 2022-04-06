@@ -30,24 +30,24 @@ describe('GIFTI-Reader-JS', function () {
             assert.equal(true, gii.getTrianglesDataArray().isBase64Binary());
         });
 
-        it('getNumPoints() should equals 143479', function () {
-            assert.equal(143479, gii.getNumPoints());
+        it('getNumPoints() should equals 5124', function () {
+            assert.equal(5124, gii.getNumPoints());
         });
 
-        it('getNumTriangles() should equals 286954', function () {
-            assert.equal(286954, gii.getNumTriangles());
+        it('getNumTriangles() should equals 10240', function () {
+            assert.equal(10240, gii.getNumTriangles());
         });
 
-        it('point data checksum should equal 470863325', function () {
+        it('point data checksum should equal 3339061177', function () {
             var imageData = gii.getPointsDataArray().getData();
             var checksum = gifti.Utils.crc32(new DataView(imageData.buffer));
-            assert.equal(checksum, 470863325);
+            assert.equal(checksum, 3339061177);
         });
 
-        it('triangle data checksum should equal 3159833463', function () {
+        it('triangle data checksum should equal 1071946961', function () {
             var imageData = gii.getTrianglesDataArray().getData();
             var checksum = gifti.Utils.crc32(new DataView(imageData.buffer));
-            assert.equal(checksum, 3159833463);
+            assert.equal(checksum, 1071946961);
         });
     });
 });
