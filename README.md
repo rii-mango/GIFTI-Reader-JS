@@ -15,7 +15,7 @@ var labels = gii.labelTable;
 ```
 
 ### Install
-Get a packaged source file:
+Get a packaged source file from the [release folder](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/release):
 
 * [gifti-reader.js](https://raw.githubusercontent.com/rii-mango/GIFTI-Reader-JS/master/release/current/gifti-reader.js)
 * [gifti-reader-min.js](https://raw.githubusercontent.com/rii-mango/GIFTI-Reader-JS/master/release/current/gifti-reader-min.js)
@@ -26,23 +26,17 @@ Or install via [NPM](https://www.npmjs.com/):
 npm install gifti-reader-js
 ```
 
-Or install via [Bower](http://bower.io/):
-
-```
-bower install gifti-reader-js
-```
-
 ### Testing
 ```
 npm test
 ```
 
 ### Building
-See the [release folder](https://github.com/rii-mango/GIFTI-Reader-JS/tree/master/release) for the latest builds or build it yourself using:
+Build it yourself using:
 ```
 npm run build
 ```
-This will output gifti-reader.js and gifti-reader-min.js to build/.
+This will output gifti-reader.js and gifti-reader-min.js to build/
 
 
 Acknowledgments
