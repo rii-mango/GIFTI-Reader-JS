@@ -13,7 +13,7 @@ var xmlStr = fs.readFileSync('./tests/data/gzip.surf.gii', "utf8");
 var gii = null;
 
 describe('GIFTI-Reader-JS', function () {
-    describe('gifti test', function () {
+    describe('test gzip.surf.gii', function () {
         it('should not throw error when reading file', function (done) {
             assert.doesNotThrow(function() {
                 gii = gifti.parse(xmlStr);
