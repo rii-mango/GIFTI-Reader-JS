@@ -38,9 +38,8 @@ npm run build
 ```
 This will output gifti-reader.js and gifti-reader-min.js to build/
 
-
-Acknowledgments
+Acknowledgements
 -----
 GIFTI-Reader-JS makes use of the following third-party libraries:
-- [pako](https://github.com/nodeca/pako) &mdash; for GZIP inflating
+- [fflate](https://github.com/101arrowz/fflate) &mdash; for GZIP inflating
 - [sax-js](https://github.com/isaacs/sax-js) &mdash; for SAX parsing
