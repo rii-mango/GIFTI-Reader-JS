@@ -11,7 +11,7 @@ gifti.Transform = gifti.Transform || ((typeof require !== 'undefined') ? require
 
 var Base64Binary = Base64Binary || ((typeof require !== 'undefined') ? require('../lib/base64-binary.js') : null);
 
-var pako = pako || ((typeof require !== 'undefined') ? require('pako') : null);
+var fflate = fflate || ((typeof require !== 'undefined') ? require('fflate') : null);
 
 
 
@@ -346,7 +346,7 @@ gifti.DataArray.readFloat32Base64 = function(obj) {
 
 gifti.DataArray.readUnsignedInt8GZIPBase64 = function(obj) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
-    rawData = pako.inflate(rawData).buffer;
+    rawData = fflate.decompressSync(new Uint8Array(rawData)).buffer;
     obj.data = new Uint8Array(rawData, 0, rawData.byteLength);
 };
 
@@ -356,7 +356,7 @@ gifti.DataArray.readUnsignedInt8GZIPBase64 = function(obj) {
 gifti.DataArray.readUnsignedInt8GZIPBase64Async = function(obj, onProgress, onFinish) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
 
-    var inflator = new pako.Inflate();
+    var inflator = new fflate.Inflate();
 
     var onFinished = function() {
         obj.data = new Uint8Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength);
@@ -370,7 +370,7 @@ gifti.DataArray.readUnsignedInt8GZIPBase64Async = function(obj, onProgress, onFi
 
 gifti.DataArray.readSignedInt32GZIPBase64 = function(obj) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
-    rawData = pako.inflate(rawData).buffer;
+    rawData = fflate.decompressSync(new Uint8Array(rawData)).buffer;
     obj.data = new Int32Array(rawData, 0, rawData.byteLength / 4);
 };
 
@@ -379,7 +379,7 @@ gifti.DataArray.readSignedInt32GZIPBase64 = function(obj) {
 gifti.DataArray.readSignedInt32GZIPBase64Async = function(obj, onProgress, onFinish) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
 
-    var inflator = new pako.Inflate();
+    var inflator = new fflate.Inflate();
 
     var onFinished = function() {
         obj.data = new Int32Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength / 4);
@@ -393,7 +393,7 @@ gifti.DataArray.readSignedInt32GZIPBase64Async = function(obj, onProgress, onFin
 
 gifti.DataArray.readFloat32GZIPBase64 = function(obj) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
-    rawData = pako.inflate(rawData).buffer;
+    rawData = fflate.decompressSync(new Uint8Array(rawData)).buffer;
     obj.data = new Float32Array(rawData, 0, rawData.byteLength / 4);
 };
 
@@ -402,7 +402,7 @@ gifti.DataArray.readFloat32GZIPBase64 = function(obj) {
 gifti.DataArray.readFloat32GZIPBase64Async = function(obj, onProgress, onFinish) {
     var rawData = Base64Binary.decodeArrayBuffer(obj.data);
 
-    var inflator = new pako.Inflate();
+    var inflator = new fflate.Inflate();
 
     var onFinished = function() {
         obj.data = new Float32Array(inflator.result.buffer, 0, inflator.result.buffer.byteLength / 4);
