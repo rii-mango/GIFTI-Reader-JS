@@ -1,6 +1,6 @@
 {
   "name": "gifti-reader-js",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "A JavaScript GIFTI file format reader.",
   "main": "src/gifti.js",
   "directories": {
@@ -9,8 +9,8 @@
   "dependencies": {
     "fflate": "*",
     "sax": "*",
-	"string_decoder": "*",
-	"buffer": "*"
+    "string_decoder": "*",
+    "buffer": "*"
   },
   "devDependencies": {
     "mocha": "*",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "mocha --timeout 0 tests",
-    "build": "rm -rf build; mkdir build; esbuild src/gifti.js --bundle --outfile=build/gifti-reader.js; esbuild src/gifti.js --bundle --minify --outfile=build/gifti-reader-min.js",
+    "build": "rm -rf build; mkdir build; esbuild src/gifti.js --bundle --global-name=gifti --outfile=build/gifti-reader.js; esbuild src/gifti.js --bundle --global-name=gifti --minify --outfile=build/gifti-reader-min.js",
     "release": "rm release/current/*.js; cp build/*.js release/current/.",
     "doc": "rm -rf build; mkdir build; ./node_modules/.bin/jsdoc2md src/*.js > build/docs.md"
   },

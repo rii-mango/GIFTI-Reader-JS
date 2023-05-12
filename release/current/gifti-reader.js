@@ -1,5 +1,5 @@
 "use strict";
-(() => {
+var gifti = (() => {
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
     get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
@@ -6430,7 +6430,7 @@
       }
     }
   });
-  require_gifti();
+  return require_gifti();
 })();
 /*! Bundled license information:
 
